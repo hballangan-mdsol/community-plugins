@@ -38,8 +38,9 @@ import Typography from '@mui/material/Typography';
 import { makeStyles, styled } from '@mui/styles';
 import type { SyntheticEvent } from 'react';
 import { useState } from 'react';
-import { MaturityRankAvatar } from '../MaturityRankAvatar';
+import { MaturityRankIcon } from '../MaturityRankIcon';
 import { InsightFacts } from '@backstage-community/plugin-tech-insights-common';
+import { MaturityRankChip } from '../MaturityRankChip';
 
 interface Props {
   checks: MaturityCheckResult[];
@@ -122,11 +123,11 @@ const MaturityCheckTableRow = ({
           <Grid container alignItems="center" spacing={2}>
             <Grid item xs={3}>
               <Stack direction="row" spacing={2} className={check}>
-                <MaturityRankAvatar
+                <MaturityRankIcon
                   value={{ rank: checkResult.check.metadata.rank }}
                   size={25}
                 />
-                <Typography>{checkResult.check.id}</Typography>
+                <Typography>{checkResult.check.name}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={7.5}>
@@ -220,9 +221,8 @@ export const MaturityCheckTable = ({
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MaturityRankAvatar
+              <MaturityRankChip
                 value={{ rank: category, isMaxRank: category <= rank.rank }}
-                variant="chip"
               />
             </Grid>
           </Grid>
