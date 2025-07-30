@@ -22,7 +22,7 @@ import { MaturityLink } from '../../helpers/MaturityLink';
 import getRankImg from '../../helpers/Rank';
 
 type Props = {
-  value: { rank: Rank; isMaxRank?: boolean };
+  value: { rank: Rank; isMaxRank: boolean };
   className?: string;
   size?: number;
   entity?: Entity;
@@ -30,34 +30,32 @@ type Props = {
 
 export const MaturityRankChip = ({ className, entity, value }: Props) => {
   const rank = value.rank;
-  let result = (
-    <Chip
-      avatar={
-        <Avatar
-          alt={Rank[rank]}
-          src={getRankImg(rank)}
-          className={className}
-          style={{ width: 27, height: 27 }}
-        />
-      }
-      label={Rank[rank]}
-      color={value.isMaxRank ? 'success' : 'default'}
-      clickable={entity !== undefined}
-    />
+  const tooltip = value.isMaxRank
+    ? 'All required tasks have been completed!'
+    : `Increase your rank by completing all ${Rank[rank + 1]} rank tasks!`;
+
+  const result = (
+    <Tooltip title={tooltip} arrow>
+      <Chip
+        avatar={
+          <Avatar
+            alt={Rank[rank]}
+            src={getRankImg(rank)}
+            className={className}
+            style={{ width: 27, height: 27 }}
+          />
+        }
+        label={Rank[rank]}
+        color={value.isMaxRank ? 'success' : 'default'}
+        clickable={entity !== undefined}
+      />
+    </Tooltip>
   );
 
   // Wrap with Entity link if Entity is provided
   if (entity !== undefined) {
-    result = <MaturityLink entity={entity}>{result}</MaturityLink>;
+    return <MaturityLink entity={entity}>{result}</MaturityLink>;
   }
 
-  // Wrap with tooltip and return
-  const tooltip = value.isMaxRank
-    ? 'All required tasks have been completed!'
-    : `Increase your rank by completing all ${Rank[rank + 1]} rank tasks!`;
-  return (
-    <Tooltip title={tooltip} arrow>
-      {result}
-    </Tooltip>
-  );
+  return result;
 };
